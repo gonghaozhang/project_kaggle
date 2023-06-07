@@ -1,45 +1,39 @@
-# Bird Species Classification using VGG19
-The source code for this project is available in the form of a Jupyter notebook, which can be run in a colab, anaconda or kaggle environment with the necessary libraries installed.
+# SegSalad - A Hands On Review of Semantic Segmentation Techniques for Weed/Crop Datasets
+
+The source code for this project is available in the [SegSalad.ipynb](SegSalad.ipynb) Jupyter Notebook. You can also access and run the notebook on Google Colab [here](https://colab.research.google.com/drive/1Xmzz54j1JgksESurdbqAeGQFGnHiCQU9?usp=sharing).
 
 ## Abstract
-This project focuses on creating a deep learning model for bird species classification. The model architecture is based on VGG19, a model known for its effectiveness in image recognition tasks. The model takes bird images as input and predicts the species of the bird.
 
-## Dataset
-The dataset is organized into a training set and a testing set, both of which include images of various bird species. Each bird species has its own directory, and all images of that species are contained within that directory. The dataset path needs to be set before running the model.
+This project explores various semantic segmentation techniques used for weed/crop datasets in precision agriculture. The project includes training three different semantic segmentation neural network architectures using transfer learning, employing image patching as a data augmentation technique, and evaluating the models qualitatively and with the Intersection Over Union (IOU) metric. The challenges and key findings of the project are discussed. For a video summary of the project, click [here](https://youtu.be/FyGz-Pb-K2k).
 
-## Image Preprocessing
-All images are resized to 224x224 pixels, as VGG19 works best with this image size. ImageDataGenerator, a tool from the Keras library, is used to automatically generate batches of tensor image data with real-time data augmentation. The data is normalized by dividing every pixel in the image by 255 (the maximum value), so that each pixel is in the range [0, 1].
+## Problem and Motivation
 
-## Model Architecture
-The base of the model is VGG19, pre-trained on the ImageNet dataset. We remove the top layer, which is responsible for classifying the 1000 ImageNet classes. Instead, a new layer is added that matches the number of bird species in the dataset. This layer uses the softmax activation function, as we are dealing with a multi-class classification problem.
+Precision agriculture aims to increase crop yield while reducing resource usage. Computer vision plays a vital role in achieving this goal by enabling targeted pesticide application, automated harvesting, and plant health monitoring. This project focuses on semantic segmentation of weeds and crops, which is particularly relevant for targeted pesticide application.
 
-## Training
-The model is compiled with Adam optimizer and categorical cross entropy loss function. The model is then trained for 10 epochs, with the data being passed in batches.
+## Dataset and Data Augmentation
 
-## Evaluation and Visualization
-The model is evaluated using the testing set, providing us with its accuracy. We also plot graphs showing how the model's accuracy and loss change over time for both the training and validation sets. This allows us to visualize how well our model is learning and whether it is overfitting or underfitting.
+The dataset used in this project is the CWFID Carrot/Weed image dataset (1). It contains 60 high-resolution images of carrot plants and weeds from an organic carrot farm. The dataset provides pixel-level annotations, with the red channel representing weeds, the green channel representing crops, and the blue channel representing the background. To overcome the high resolution and limited dataset size, image patching is applied, dividing the images into smaller patches of size 224x224. This data augmentation technique improves training efficiency. The dataset is split randomly into an 80% training set and a 20% testing set.
 
-![accuracy and loss](accuracy.png)
+## Semantic Segmentation Models
 
-## Prediction
-The model is then used to predict the species of the birds in the testing set. It outputs probabilities for each bird species, and the species with the highest probability is chosen as the prediction. We generate a classification report to evaluate the model’s performance.
+Three semantic segmentation models are trained in this project: Fully Convolutional Network (FCN), Google DeepLabv3, and UNet. Each model utilizes a ResNet50 backbone. Transfer learning is employed by utilizing pretrained models. The FCN and DeepLabv3 models are pretrained on the COCO 2017 dataset, while the UNet model is pretrained on ImageNet. Mean Squared Error (MSE) loss is used during training, and the IOU metric is used for model evaluation.
 
-We also generate a confusion matrix to see how well the model has performed for each bird species. The diagonal elements represent the number of points for which the predicted label is equal to the true label, while off-diagonal elements are those that are mislabeled by the classifier.
+## Model Evaluation
 
-## Usage
-You need to set the correct dataset path for train_data_dir and test_data_dir before running the script. The script is written in Python and requires certain libraries. Please ensure that the following libraries are installed in your Python environment:
+The models are evaluated using the Intersection Over Union (IOU) metric. The following table shows the IOU results for crops, weeds, and soil:
 
-- os
-- cv2
-- pickle
-- itertools
-- numpy
-- pandas
-- seaborn
-- matplotlib
-- tensorflow
-- sklearn
-- Future Work
-<br>
+| Model         | Crop IOU | Weed IOU | Soil IOU |
+| ------------- | -------- | -------- | -------- |
+| FCN           | 42.79%   | 66.78%   | 97.66%   |
+| DeepLabv3     | 20.32%   | 67.55%   | 97.86%   |
+| UNet          | 49.45%   | 75.21%   | 98.38%   |
 
-Although the model shows decent results, there are several ways it can be improved. The accuracy might increase with a larger, more diverse dataset. Hyperparameter tuning could further improve model performance. Different architectures like ResNet or EfficientNet could be tested for better results.
+The UNet model outperforms the FCN and DeepLabv3 models for all classes. However, all models struggle with accurately detecting crops, while being relatively good at detecting weeds and soil. It is worth noting that overfitting may have occurred due to fine-tuning for too many epochs.
+
+## Takeaways and Future Work
+
+This project provides insights into common semantic segmentation models, training neural networks in PyTorch, and their application in precision agriculture. Future work could involve exploring additional network architectures, training models from scratch, and incorporating domain-specific knowledge into the models. Further improvements could be made by using larger datasets with more diverse weed and crop types.
+
+## References
+
+(1) P. Ribera et al., "Crop/Weed Field Images Dataset (CWFID): A Large Dataset for Semantic Segmentation," in IEEE Robotics and Automation Letters, vol. 4, no. 3, pp. 2290-2297, July 2019, doi: 10.1109/LRA.2019.2897353.

@@ -28,7 +28,7 @@ During the training phase, the model is compiled with the Adam optimizer and the
 
 After the model is trained, it is evaluated using the testing set to assess its performance. The accuracy metric is used to measure how well the model predicts the bird species. Additionally, graphs are plotted to visualize the model's accuracy and loss over time for both the training and validation sets. These visualizations help monitor the model's learning progress and identify any signs of overfitting or underfitting.
 
-![Accuracy and Loss](ACCURACY_EVOLUTION.png?raw=true)
+![Accuracy and Loss](writeup/ACCURACY_EVOLUTION.png?raw=true)
 
 ## Prediction
 

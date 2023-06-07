@@ -1,6 +1,6 @@
-readme_content = '''# Bird Species Classification using VGG19
+# Bird Species Classification with Convolutional Neural Networks
+This repository provides the Python code used for the training and evaluation of a bird species classifier based on the EfficientNet architecture. The model has been tested on a dataset containing various bird species images and is able to distinguish between different bird types with high accuracy.
 
-![Bird Species Classification](bird_classification.png)
 
 ## Introduction
 
@@ -28,7 +28,7 @@ During the training phase, the model is compiled with the Adam optimizer and the
 
 After the model is trained, it is evaluated using the testing set to assess its performance. The accuracy metric is used to measure how well the model predicts the bird species. Additionally, graphs are plotted to visualize the model's accuracy and loss over time for both the training and validation sets. These visualizations help monitor the model's learning progress and identify any signs of overfitting or underfitting.
 
-![Accuracy and Loss](accuracy_loss.png)
+![Accuracy and Loss](ACCURACY_EVOLUTION.png)
 
 ## Prediction
 
